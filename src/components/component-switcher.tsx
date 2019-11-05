@@ -1,11 +1,11 @@
-import * as React from 'react'
-import styled from 'styled-components';
+import React, { ChangeEvent, ReactPortal } from 'react'
+import styled, {StyledComponent} from 'styled-components';
 import writeGood from 'write-good';
 import { Col, Row } from 'styled-bootstrap-grid';
 
 type ComponentSwitcherProps = {
   defaultText: string,
-  element: string | React.ReactNode,
+  element: ReactPortal | string,
   textElement: 'input' | 'textarea',
 };
 
@@ -21,7 +21,7 @@ const Input = styled.input`
 `;
 
 export default class ComponentSwitcher extends React.Component<ComponentSwitcherProps, ComponentSwitcherState> {
-  private _node?: HTMLDivElement;
+  private _node?: HTMLDivElement | null;
 
   constructor(props: ComponentSwitcherProps) {
     super(props);
@@ -43,13 +43,14 @@ export default class ComponentSwitcher extends React.Component<ComponentSwitcher
     document.removeEventListener('click', this.handleOutsideClick, false);
   };
 
-  handleClick = () => {
+  public handleClick = (): void => {
     this.setState({
       elementIsVisible: false,
     });
   };
 
-  handleOutsideClick(event) {
+  public handleOutsideClick(event: MouseEvent): void {
+    // @ts-ignore
     if (this._node.contains(event.target)) {
       return;
     }
@@ -59,30 +60,32 @@ export default class ComponentSwitcher extends React.Component<ComponentSwitcher
     });
   }
 
-  setText = (event) => {
+  setText = (event: ChangeEvent) => {
+    // @ts-ignore
     this.setState({ text: event.target.value });
   };
 
   render() {
-    const TextElementList = {
+    const TextElementList: { input: StyledComponent<'input', any, {}, never> } = {
       input: Input
     };
-    const Element = this.props.element;
+    const Element: any = this.props.element;
+    // @ts-ignore
     const TextElement = TextElementList[this.props.textElement];
     const suggestions = writeGood(this.state.text);
 
     let suggestionsText = '';
 
-    suggestions.forEach((data) => {
+    suggestions.forEach((data: { reason: string }) => {
       suggestionsText += data.reason + "\n\n";
     });
 
     const { text } = this.state;
-    
+
     return (
       <div ref={ node => this._node = node }>
         <Row>
-          <Col sm="12" onClick={ this.handleClick }>
+          <Col sm={12} onClick={ this.handleClick }>
             <Element style={{
               display: (this.state.elementIsVisible ? 'block' : 'none')
             }}>

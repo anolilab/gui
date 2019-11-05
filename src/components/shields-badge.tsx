@@ -1,6 +1,5 @@
 import * as React from 'react'
 import shieldsBadgeData, { BadgeName } from 'shields-badge-data'
-import { Col, Row } from 'styled-bootstrap-grid';
 
 export type ShieldsBadgeStyle = 'lastic' | 'flat' | 'flat-square' | 'for-the-badge' | 'popout' | 'popout-square' | 'social';
 
@@ -18,7 +17,7 @@ export default class ShieldsBadge extends React.Component<ShieldsBadgeProp> {
 
   render() {
     const { service, repo, branch, style } = this.props;
-    let badgeArgs = {
+    let badgeArgs: Record<string, string> = {
       userRepo: repo,
     };
 
@@ -26,7 +25,7 @@ export default class ShieldsBadge extends React.Component<ShieldsBadgeProp> {
       badgeArgs['branch'] = branch;
     }
 
-    const { title, image, link } = shieldsBadgeData(
+    const { image, title } = shieldsBadgeData(
       service,
       badgeArgs,
       {
@@ -39,7 +38,7 @@ export default class ShieldsBadge extends React.Component<ShieldsBadgeProp> {
     );
 
     return (
-      <img src={image.href}/>
+      <img src={image.href} alt={title} />
     );
   }
 }

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import TurndownService from 'turndown';
-import styled from 'styled-components';
 
 type MarkdownPreviewProps = {
   htmlText: string

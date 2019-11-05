@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components';
 import Button from './button';
 import { Container, Row, Col, GridThemeProvider } from 'styled-bootstrap-grid';
+import {ChangeEvent} from 'react';
 
 const Section = styled.section`
   width: 100%;
@@ -38,8 +39,12 @@ type EditorState = {
     currentText: string
 }
 
-export default class Editor extends React.Component<{}, EditorState> {
-  constructor(props) {
+interface EditorProps {
+
+}
+
+export default class Editor extends React.Component<EditorProps, EditorState> {
+  constructor(props: EditorProps) {
       super(props);
 
       this.state = {
@@ -47,7 +52,8 @@ export default class Editor extends React.Component<{}, EditorState> {
       };
   }
 
-  setText = (event) => {
+  setText = (event: ChangeEvent) => {
+    // @ts-ignore
     this.setState({ currentText: event.target.value });
   };
 
@@ -57,10 +63,10 @@ export default class Editor extends React.Component<{}, EditorState> {
         <GridThemeProvider>
           <Container>
             <Row>
-              <Col col sm="12">
+              <Col col sm={12}>
                 <Button currentText={ this.state.currentText } />
               </Col>
-              <Col col sm="12">
+              <Col col sm={12}>
                 <Pre>
                   {`
   {
